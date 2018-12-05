@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class ApareceAlien : MonoBehaviour {
     private Animator estados;
+    public float TApareceAlien;
+    private bool BanInicio;
     // Use this for initialization
 	void Start () {
+
         estados = gameObject.GetComponentInParent<Animator>();
         gameObject.GetComponent<SkinnedMeshRenderer>().enabled = false;
-        StartCoroutine(ActivoAlien(3.5f));
-        StartCoroutine(ActivoAnimacion(7.0f));
+        //Esta corrutina hace que el alien aparezca
+        StartCoroutine(ActivoAlien(TApareceAlien));
+        //Esta corutina hace que el alien entre en modo de ataque. 
+        StartCoroutine(ActivoAnimacion(TApareceAlien + 10.0f));
     }
 
     // Update is called once per fra
@@ -19,13 +24,20 @@ public class ApareceAlien : MonoBehaviour {
     }
 
     IEnumerator ActivoAnimacion(float TAnimacion) {
-        yield return new WaitForSeconds(TAnimacion);
-        Debug.Log("Hola");
-        estados.SetBool("ataque", false);
-        yield return new WaitForSeconds(5.0f);
-        Debug.Log("Hola 3 ");
-        estados.SetBool("ataque", true);
-        StartCoroutine(ActivoAnimacion(5.0f));
+        if (BanInicio == true)
+        {
+            yield return new WaitForSeconds(TAnimacion);
+            estados.SetBool("ataque", true);
+            BanInicio = false;
+            StartCoroutine(ActivoAnimacion(0.0f));
+        }
+        else {
+            estados.SetBool("ataque", false);
+            yield return new WaitForSeconds(10.0f);
+            estados.SetBool("ataque", true);
+            yield return new WaitForSeconds(3.0f);
+            StartCoroutine(ActivoAnimacion(0.0f));
+        }
     }
     
 }
