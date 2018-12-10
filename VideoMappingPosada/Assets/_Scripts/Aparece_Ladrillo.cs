@@ -14,5 +14,19 @@ public class Aparece_Ladrillo : MonoBehaviour {
     {
         yield return new WaitForSeconds(delay);
         gameObject.GetComponent<MeshRenderer>().enabled = true;
+        StartCoroutine(GiroLadrillos(true));
     }
+
+    IEnumerator GiroLadrillos( bool GiroActv) {
+
+        if (GiroActv == true) {
+            transform.Rotate(Vector3.left*Time.deltaTime);
+        }
+        yield return new WaitForSeconds(10.0f);
+        GiroActv = false;
+    }
+
+        
+
+
 }
